@@ -61,7 +61,7 @@ async function run() {
       const filter = { _id: new ObjectId(jobid) }
      
       const job = await allJobs.findOne(filter);
-      console.log(job)
+   
  
       res.send(job) // Return the job data as JSON
     });
@@ -75,20 +75,32 @@ async function run() {
 
     })
     //updatingjobs
-    app.get('/updatejob/:jobid',async (req,res)=>{
-      const jobid = req.params.jobid;
+    // app.get('/updatejob/:jobid',async (req,res)=>{
+    //   const jobid = req.params.jobid;
     
-      const filter = { _id: new ObjectId(jobid) }
+    //   const filter = { _id: new ObjectId(jobid) }
      
-      const job = await allJobs.findOne(filter);
-      res.send(job)
+    //   const job = await allJobs.findOne(filter);
+    //   res.send(job)
 
-    })
+    // // })
+    // app.get("/jobdetails/:jobid", async (req, res) => {
+    //   const jobid = req.params.jobid;
+    
+    //   const filter = { _id: new ObjectId(jobid) }
+     
+    //   const job = await allJobs.findOne(filter);
+    
+ 
+    //   res.send(job) // Return the job data as JSON
+    // });
 
     app.put('/updatejob/:jobid',async (req,res)=>{
       const jobid = req.params.jobid;
+      console.log(jobid)
     
       const filter = { _id: new ObjectId(jobid) }
+      console.log(filter)
      const updatejob = req.body
      
      const updateDoc = {
@@ -101,6 +113,14 @@ async function run() {
       console.log(result)
       res.send(result)
 
+    })
+
+    //delete
+    app.delete('/delete/:jobid',async (req,res)=>{
+      const jobid = req.params.jobid;
+      const query = {_id: new ObjectId(jobid)};
+      const result = await allJobs.deleteOne(query)
+      res.send(result);
     })
 
     await client.db("admin").command({ ping: 1 });
