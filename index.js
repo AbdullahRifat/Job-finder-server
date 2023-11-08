@@ -12,7 +12,7 @@ require('dotenv').config()
 
 app.use(cors(
    {
-    origin:['http://localhost:5173']
+    origin:['http://localhost:5173',"https://projects-ceec2.web.app"]
     ,
     credentials:true
    }
@@ -71,13 +71,17 @@ async function run() {
       const user = req.body;
     
 
-      const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'100h'})
+      const token = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'1h'})
       res
       .cookie('token',token,{
+        // httpOnly: true,
+        // secure: true,
+        // // sameSite: 'none',
+        // path: '/'
         httpOnly: true,
-        secure:false,
-       
-        path: '/',
+                secure: process.env.NODE_ENV === 'production', 
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+        
       })
       .send({success:true})
 
@@ -214,15 +218,14 @@ async function run() {
 
 
 
-      if(req?.user?.email !== req?.query?.email) {
-        console.log(req.user.email,req.params.email)
-        console.log("unnnnnnn")
+      if(req?.user?.email !== req?.query?.email.toLocaleLowerCase()) {
+      
         return res.status(403).send({ message: 'Forbidden access' });
       }
       let query = {};
 
 
-      if(req.query?.email){
+      if(req.query?.email.toLocaleLowerCase()){
         query = {email:req.query.email}
       }
       
@@ -232,10 +235,10 @@ async function run() {
     })
     //applied jobs
     app.get('/appliedjobs', verifyToken, async (req, res) => {
-      console.log(req.query.email)
+     
       if (req.user.email !== req.query.email) {
         console.log(req.user.email, req.query.email);
-        console.log("unnnnnnn");
+       
         return res.status(403).send({ message: 'Forbidden access' });
       }
     
