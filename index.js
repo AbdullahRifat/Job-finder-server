@@ -101,13 +101,13 @@ async function run() {
     //getting all jobs
 
 
-    app.get('/brands',async (req,res)=>{
+  //   app.get('/brands',async (req,res)=>{
     
-      const cursor =  phonesCollection.find()
-      const result = await cursor.toArray()
-      res.send(result);
+  //     const cursor =  phonesCollection.find()
+  //     const result = await cursor.toArray()
+  //     res.send(result);
 
-  })
+  // })
     app.get("/alljobs", async (req, res) => {
       const cursor = allJobs.find();
       const result = await cursor.toArray()
